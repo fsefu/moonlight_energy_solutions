@@ -2,7 +2,7 @@ import pandas as pd
 from scripts.eda import summary_statistics, correlation_analysis
 
 # Load the cleaned dataset
-df = pd.read_csv('data/clean_solar_measurement_data.csv')
+df = pd.read_csv('data/clean-benin-malanville.csv')
 
 # Summary Statistics
 print("Final Summary Statistics:")
