@@ -1,8 +1,14 @@
+import sys
+import os
 from matplotlib import pyplot as plt
 import streamlit as st
-from src.data_loader import DataLoader
-from src.data_processor import DataProcessor
-from src.eda import EDA
+
+# Add the src directory to the system path
+sys.path.append(os.path.join(os.path.dirname(__file__), 'src'))
+
+from data_loader import DataLoader
+from data_processor import DataProcessor
+from eda import EDA
 
 class MainApp:
     def run(self):
