@@ -50,7 +50,7 @@ def temp_humidity_analysis(df):
 
 # Main Function
 if __name__ == "__main__":
-    df = load_data('data/solar_measurement_data.csv')
+    df = load_data('data/benin-malanville.csv')
     
     # Summary Statistics
     print("Summary Statistics:")

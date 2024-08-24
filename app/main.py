@@ -1,34 +1,38 @@
+from matplotlib import pyplot as plt
 import streamlit as st
-import pandas as pd
-import plotly.express as px
+from src.data_loader import DataLoader
+from src.data_processor import DataProcessor
+from src.eda import EDA
 
-# Load the dataset
-df = pd.read_csv('data/clean_solar_measurement_data.csv')
+class MainApp:
+    def run(self):
+        st.title("Solar Data Analysis Dashboard")
 
-# Dashboard
-st.title("MoonLight Energy Solutions Dashboard")
-st.markdown("## Solar Radiation Data Insights")
+        # File uploader for the user to upload a CSV file
+        uploaded_file = st.file_uploader("Choose a CSV file", type="csv")
+        if uploaded_file is not None:
+            # Load data
+            loader = DataLoader(uploaded_file)
+            data = loader.load_data()
 
-# Time Series Plot
-st.markdown("### Time Series of Solar Irradiance")
-fig = px.line(df, x='Timestamp', y=['GHI', 'DNI', 'DHI'], title="Time Series Analysis")
-st.plotly_chart(fig)
+            # Process data
+            processor = DataProcessor(data)
+            clean_data = processor.clean_data()
 
-# Correlation Heatmap
-st.markdown("### Correlation Heatmap")
-corr = df.corr()
-fig = px.imshow(corr, text_auto=True, title="Correlation Analysis")
-st.plotly_chart(fig)
+            # Display raw data
+            st.subheader("Raw Data")
+            st.write(clean_data)
 
-# Wind Analysis
-st.markdown("### Wind Speed and Direction")
-fig = px.scatter_polar(df, r="WS", theta="WD", color="WSstdev", size="WSgust",
-                       color_continuous_scale=px.colors.sequential.Plasma,
-                       title="Wind Speed and Direction Analysis")
-st.plotly_chart(fig)
+            # Perform and display EDA
+            eda = EDA(clean_data)
+            st.subheader("Correlation Heatmap")
+            eda.plot_correlation_heatmap()
+            st.pyplot(plt)
 
-st.markdown("### Strategy Recommendation")
-high_potential_regions = df.groupby('Region')['GHI'].mean().sort_values(ascending=False)
-st.write(high_potential_regions)
+            st.subheader("Time Series of Solar Irradiance")
+            eda.plot_time_series()
+            st.pyplot(plt)
 
-# Run the app with: streamlit run app/main.py
+if __name__ == "__main__":
+    app = MainApp()
+    app.run()
