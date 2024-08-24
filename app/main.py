@@ -4,7 +4,7 @@ from matplotlib import pyplot as plt
 import streamlit as st
 
 # Add the src directory to the system path
-sys.path.append(os.path.join(os.path.dirname(__file__), 'src'))
+sys.path.append(os.path.join(os.path.dirname(__file__), '../src'))
 
 from data_loader import DataLoader
 from data_processor import DataProcessor
